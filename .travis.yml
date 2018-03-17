@@ -20,7 +20,10 @@ script:
   - test_idempotence=false ${PWD}/tests/test.sh
 
   # Make sure haproxy is installed.
-  - 'docker exec --tty ${container_id} env TERM=xterm /usr/bin/graylog-collector-sidecar -version && /usr/bin/graylog-collector-sidecar -configtest'
+  - 'docker exec --tty ${container_id} env TERM=xterm /usr/bin/graylog-collector-sidecar -version'
+
+  # Make sure config syntax is OK
+  - 'docker exec --tty ${container_id} env TERM=xterm /usr/bin/graylog-collector-sidecar -configtest'
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
