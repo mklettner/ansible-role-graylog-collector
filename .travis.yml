@@ -17,10 +17,10 @@ script:
   - chmod +x ${PWD}/tests/test.sh
 
   # Run tests.
-  - ${PWD}/tests/test.sh
+  - test_idempotence=false ${PWD}/tests/test.sh
 
   # Make sure haproxy is installed.
-  - 'docker exec --tty ${container_id} env TERM=xterm haproxy -v'
+  - 'docker exec --tty ${container_id} env TERM=xterm /usr/bin/graylog-collector-sidecar -version && /usr/bin/graylog-collector-sidecar -configtest'
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
