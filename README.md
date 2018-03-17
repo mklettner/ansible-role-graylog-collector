@@ -2,7 +2,16 @@
 
 [![Build Status](https://travis-ci.org/mklettner/ansible-role-sidecar.svg?branch=master)](https://travis-ci.org/mklettner/ansible-role-sidecar)
 
-Installs Graylog Sidecar Collector on RedHat/CentOS Linux servers.
+Installs and configures Graylog Sidecar Collector on RedHat/CentOS Linux servers.
+
+Installation options:
+- latest version (pulled from official github repository)
+- specific version (pulled from official github repository) 
+- local rpm (copied from files directory to remote server)
+
+
+
+
 
 **Note**: This role is still work in progress
 
