@@ -1,0 +1,9 @@
+---
+# file: handlers/main.yml
+
+- name: restart collector_sidecar
+  service:
+    name: "{{ sidecar_service }}"
+    state: restarted
+    enabled: yes
+  become: yes

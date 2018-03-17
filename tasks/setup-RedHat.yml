@@ -1,0 +1,51 @@
+---
+- name: get latest sidecar package url
+  shell: curl --silent {{ sidecar_github_repo }}/releases/latest|/usr/bin/awk '/browser_download_url/ { print $2 }' | /usr/bin/sed 's/"//g'| grep {{ sidecar_architecture }} |grep rpm
+  register: install_latest_version
+  when: sidecar_version is undefined and sidecar_local_package is undefined
+
+- name: get specific sidecar package url
+  shell: curl --silent {{ sidecar_github_repo }}/releases|grep {{ sidecar_version }} | /usr/bin/awk '/browser_download_url/ { print $2 }' | /usr/bin/sed 's/"//g'|grep {{ sidecar_architecture }} |grep rpm
+  register: install_specific_version
+  when: sidecar_version is defined and sidecar_local_package is undefined
+
+- name: copy rpm to server
+  copy:
+     src: ../files/{{ sidecar_local_package }}
+     dest: /tmp/{{ sidecar_local_package }}
+  when: sidecar_local_package is defined and sidecar_version is undefined
+
+
+- name: install selinux dependency
+  yum:
+    name: libselinux-python
+    state: present
+  when: ansible_distribution_major_version == "6"
+
+
+- name: install specific sidecar from official github repo
+  yum:
+    name: "{{ install_specific_version.stdout_lines }}"
+    state: present
+  register: installed_specific
+  when: sidecar_version is defined and sidecar_local_package is undefined
+
+- name: install latest sidecar from official github repo
+  yum:
+    name: "{{ install_latest_version.stdout_lines }}"
+    state: present
+  register: installed_latest
+  when: sidecar_version is undefined and sidecar_local_package is undefined
+
+- name: install local sidecar rpm
+  yum:
+     name: /tmp/{{ sidecar_local_package }}
+     state: present
+  when: sidecar_local_package is defined and sidecar_version is undefined
+
+
+- name: "Activate the Sidecar as a system service"
+  shell: graylog-collector-sidecar -service install
+  become: yes
+  when: installed_specific.changed or installed_latest.changed
+  ignore_errors: true

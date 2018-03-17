@@ -1,0 +1,22 @@
+---
+# file: tasks/main.yml
+
+# Variable configuration.
+- import_tasks: variables.yml
+
+# Setup/install tasks.
+- import_tasks: setup-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: "Configure sidecar"
+  template:
+    src: collector_sidecar.yml
+    dest: "{{ sidecar_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart collector_sidecar
+  become: yes
+
+
