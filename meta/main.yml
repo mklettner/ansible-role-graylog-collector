@@ -2,7 +2,7 @@
 # meta/main.yml
 
 galaxy_info:
-    author: motzmdf
+    author: mklettner
     description: Install Graylog Sidecar Collector
     license: MIT
     min_ansible_version: 1.8
