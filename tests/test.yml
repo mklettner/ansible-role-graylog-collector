@@ -8,4 +8,4 @@
                      - {name: filebeat, enabled: true, binary_path: /usr/bin/filebeat, configuration_path: /etc/graylog/collector-sidecar/generated/filebeat.yml}
 
   roles:
-    - role_under_test
+    - mklettner.graylog-collector
