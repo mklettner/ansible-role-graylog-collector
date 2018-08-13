@@ -36,7 +36,6 @@
   yum:
     name: "{{ install_latest_version.stdout_lines }}"
     state: present
-  become: yes
   register: installed_latest
   when: sidecar_version is undefined and sidecar_local_package is undefined
 
