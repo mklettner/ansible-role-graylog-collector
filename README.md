@@ -1,6 +1,6 @@
-# Ansible Role: Sidecar
+# Ansible Role: Graylog Collector Sidecar
 
-[![Build Status](https://travis-ci.org/mklettner/ansible-role-sidecar.svg?branch=master)](https://travis-ci.org/mklettner/ansible-role-sidecar)
+[![Build Status](https://api.travis-ci.org/mklettner/ansible-role-graylog-collector.svg?branch=master)](https://travis-ci.org/mklettner/ansible-role-graylog-collector)
 
 Installs and configures Graylog Sidecar Collector on RedHat/CentOS Linux servers.
 
@@ -9,11 +9,6 @@ Installation options:
 - specific version (pulled from official github repository) 
 - local rpm (copied from files directory to remote server)
 
-
-
-
-
-**Note**: This role is still work in progress
 
 ## Requirements
 
@@ -66,6 +61,7 @@ None.
         - role: sidecar
           sidecar_server_url: https://example.com:9000/api/
           sidecar_update_interval: 20
+          sidecar_node_id: "{{ ansible_hostname }}"
           sidecar_backends:
                      - {name: filebeat, enabled: true, binary_path: /usr/bin/filebeat, configuration_path: /etc/graylog/collector-sidecar/generated/filebeat.yml}
 
