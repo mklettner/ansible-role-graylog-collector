@@ -1,0 +1,69 @@
+---
+- name: install NXLog {{ sidecar_nxlog_version }} from official repo
+  apt:
+    deb: "{{ sidecar_nxlog_package_url }}"
+    state: present
+  become: yes
+  when: sidecar_install_nxlog and sidecar_nxlog_version is defined
+
+- name: deactivate NXLog service because of Sidecar-managed
+  service:
+    name: nxlog
+    enabled: no
+    state: stopped
+  when: sidecar_install_nxlog
+
+- name: add nxlog user to adm group
+  user:
+    name: nxlog
+    groups: adm
+    append: yes
+  when: sidecar_install_nxlog
+
+- name: get latest sidecar package url
+  shell: curl --silent {{ sidecar_github_repo }}/releases/latest|/usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'| grep {{ sidecar_architecture }} |grep deb
+  register: install_latest_version
+  when: sidecar_version is undefined and sidecar_local_package is undefined
+
+- name: get specific sidecar package url
+  shell: curl --silent {{ sidecar_github_repo }}/releases|grep {{ sidecar_version }} | /usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'|grep {{ sidecar_architecture }} |grep deb
+  register: install_specific_version
+  when: sidecar_version is defined and sidecar_local_package is undefined
+
+- name: copy deb to server
+  copy:
+     src: ../files/{{ sidecar_local_package }}
+     dest: /tmp/{{ sidecar_local_package }}
+  when: sidecar_local_package is defined and sidecar_version is undefined
+
+- name: install specific sidecar from official github repo
+  apt:
+    deb: "{{ install_specific_version.stdout_lines[0] }}"
+    state: present
+  become: yes
+  register: installed_specific
+  when: sidecar_version is defined and sidecar_local_package is undefined
+
+- name: debug
+  debug:
+    msg: '{{ install_latest_version.stdout_lines[0] }}'
+
+- name: install latest sidecar from official github repo
+  apt:
+    deb: "{{ install_latest_version.stdout_lines[0] }}"
+    state: present
+  become: yes
+  register: installed_latest
+  when: sidecar_version is undefined and sidecar_local_package is undefined
+
+- name: install local sidecar deb
+  apt:
+    deb: /tmp/{{ sidecar_local_package }}
+    state: present
+  when: sidecar_local_package is defined and sidecar_version is undefined
+
+- name: "Activate the Sidecar as a system service"
+  shell: graylog-collector-sidecar -service install
+  become: yes
+  when: installed_specific.changed or installed_latest.changed
+  ignore_errors: true
