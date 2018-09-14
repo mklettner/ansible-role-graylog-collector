@@ -8,6 +8,10 @@
 - import_tasks: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
+# Setup/install tasks.
+- import_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
 - name: "Configure sidecar"
   template:
     src: collector_sidecar.yml

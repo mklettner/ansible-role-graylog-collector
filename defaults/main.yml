@@ -9,6 +9,8 @@ sidecar_github_repo: https://api.github.com/repos/Graylog2/collector-sidecar
 sidecar_architecture: x86_64
 sidecar_config_file: /etc/graylog/collector-sidecar/collector_sidecar.yml
 
+sidecar_nxlog_version: 2.10.2102
+sidecar_install_nxlog: true
 
 #Sidecar config properties
 sidecar_server_url: http://127.0.0.1:9000/api/
