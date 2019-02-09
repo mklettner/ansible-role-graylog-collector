@@ -5,5 +5,5 @@
   service:
     name: "{{ sidecar_service }}"
     state: restarted
-    enabled: yes
-  become: yes
+    enabled: true
+  become: true

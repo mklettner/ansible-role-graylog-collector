@@ -3,13 +3,13 @@
   apt:
     deb: "{{ sidecar_nxlog_package_url }}"
     state: present
-  become: yes
+  become: true
   when: sidecar_install_nxlog and sidecar_nxlog_version is defined
 
 - name: deactivate NXLog service because of Sidecar-managed
   service:
     name: nxlog
-    enabled: no
+    enabled: false
     state: stopped
   when: sidecar_install_nxlog
 
@@ -17,7 +17,7 @@
   user:
     name: nxlog
     groups: adm
-    append: yes
+    append: true
   when: sidecar_install_nxlog
 
 - name: get latest sidecar package url
@@ -32,15 +32,15 @@
 
 - name: copy deb to server
   copy:
-     src: ../files/{{ sidecar_local_package }}
-     dest: /tmp/{{ sidecar_local_package }}
+    src: ../files/{{ sidecar_local_package }}
+    dest: /tmp/{{ sidecar_local_package }}
   when: sidecar_local_package is defined and sidecar_version is undefined
 
 - name: install specific sidecar from official github repo
   apt:
     deb: "{{ install_specific_version.stdout_lines[0] }}"
     state: present
-  become: yes
+  become: true
   register: installed_specific
   when: sidecar_version is defined and sidecar_local_package is undefined
 
@@ -52,7 +52,7 @@
   apt:
     deb: "{{ install_latest_version.stdout_lines[0] }}"
     state: present
-  become: yes
+  become: true
   register: installed_latest
   when: sidecar_version is undefined and sidecar_local_package is undefined
 
@@ -64,6 +64,6 @@
 
 - name: "Activate the Sidecar as a system service"
   shell: graylog-collector-sidecar -service install
-  become: yes
+  become: true
   when: installed_specific.changed or installed_latest.changed
   ignore_errors: true

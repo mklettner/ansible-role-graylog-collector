@@ -1,14 +1,15 @@
-server_url: {{ sidecar_server_url }}
-update_interval: {{ sidecar_update_interval }}
-tls_skip_verify: {{ sidecar_tls_skip_verify }}
-send_status: {{ sidecar_send_status }}
-list_log_files: {{ sidecar_list_log_files }}
-node_id: {{ sidecar_node_id }}
-collector_id: {{ sidecar_collector_id }}
-cache_path: {{ sidecar_cache_path }}
-log_path: {{ sidecar_log_path }}
-log_rotation_time: {{ sidecar_log_rotation_time }}
-log_max_age: {{ sidecar_log_max_age }}
+---
+server_url: {{sidecar_server_url}}
+update_interval: {{sidecar_update_interval}}
+tls_skip_verify: {{sidecar_tls_skip_verify}}
+send_status: {{sidecar_send_status}}
+list_log_files: {{sidecar_list_log_files}}
+node_id: {{sidecar_node_id}}
+collector_id: {{sidecar_collector_id}}
+cache_path: {{sidecar_cache_path}}
+log_path: {{sidecar_log_path}}
+log_rotation_time: {{sidecar_log_rotation_time}}
+log_max_age: {{sidecar_log_max_age}}
 tags:
 {% for tag in sidecar_tags %}
   - {{ tag }}

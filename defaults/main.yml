@@ -1,9 +1,9 @@
 ---
-#If you like to install a specific version:
-#sidecar_version: 0.1.5
+# If you like to install a specific version:
+# sidecar_version: 0.1.5
 
-#If you like to install a local package, place it in the files folder and define the sidecar_local_package var with the file name:
-#sidecar_local_package: collector-sidecar-0.1.5-1.x86_64.rpm
+# If you like to install a local package, place it in the files folder and define the sidecar_local_package var with the file name:
+# sidecar_local_package: collector-sidecar-0.1.5-1.x86_64.rpm
 
 sidecar_github_repo: https://api.github.com/repos/Graylog2/collector-sidecar
 sidecar_architecture: x86_64
@@ -12,7 +12,7 @@ sidecar_config_file: /etc/graylog/collector-sidecar/collector_sidecar.yml
 sidecar_nxlog_version: 2.10.2102
 sidecar_install_nxlog: true
 
-#Sidecar config properties
+# Sidecar config properties
 sidecar_server_url: http://127.0.0.1:9000/api/
 sidecar_update_interval: 10
 sidecar_tls_skip_verify: false
@@ -25,7 +25,7 @@ sidecar_log_path: /var/log/graylog/collector-sidecar
 sidecar_log_rotation_time: 86400
 sidecar_log_max_age: 604800
 
-#These are just examples, of course you can add more tags and backends.
+# These are just examples, of course you can add more tags and backends.
 sidecar_tags: ['linux', 'apache']
 
 sidecar_backends:
