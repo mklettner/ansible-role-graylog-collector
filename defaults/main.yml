@@ -1,6 +1,6 @@
 ---
-# If you like to install a specific version:
-# sidecar_version: 0.1.5
+# If you like to install the latest version comment out:
+sidecar_version: 0.1.8
 
 # If you like to install a local package, place it in the files folder and define the sidecar_local_package var with the file name:
 # sidecar_local_package: collector-sidecar-0.1.5-1.x86_64.rpm
