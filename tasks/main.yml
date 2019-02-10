@@ -21,4 +21,5 @@
     mode: 0644
   notify:
     - restart collector_sidecar
+    - activate collector_service
   become: true

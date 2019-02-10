@@ -7,18 +7,22 @@
   register: dependencies_installed
 
 # Gather facts again after installing lsb-release to allow using ansible_lsb.codename for nxlog installation
-- name: Collect facts again
+- name: collect facts
   setup:
     gather_subset:
       - '!all'
       - '!any'
       - facter
-  when: dependencies_installed.changed
+  when: dependencies_installed
 
 - name: install NXLog {{ sidecar_nxlog_version }} from official repo
   apt:
     deb: "{{ sidecar_nxlog_package_url }}"
     state: present
+  register: nxlog_installed
+  until: nxlog_installed is success
+  retries: 10
+  delay: 2
   become: true
   when: sidecar_install_nxlog and sidecar_nxlog_version is defined
 
@@ -64,6 +68,11 @@
     state: present
   become: true
   register: installed_specific
+  until: installed_specific is success
+  retries: 10
+  delay: 2
+  notify:
+    - activate collector_service
   when: sidecar_version is defined and sidecar_local_package is undefined
 
 # - name: debug
@@ -76,16 +85,17 @@
     state: present
   become: true
   register: installed_latest
+  until: installed_latest is success
+  retries: 10
+  delay: 2
+  notify:
+    - activate collector_service
   when: sidecar_version is undefined and sidecar_local_package is undefined
 
 - name: install local sidecar deb
   apt:
     deb: /tmp/{{ sidecar_local_package }}
     state: present
+  notify:
+    - activate collector_service
   when: sidecar_local_package is defined and sidecar_version is undefined
-
-- name: "Activate the Sidecar as a system service"
-  shell: graylog-collector-sidecar -service install
-  become: true
-  when: installed_specific.changed or installed_latest.changed
-  ignore_errors: true

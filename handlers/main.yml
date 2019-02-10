@@ -1,6 +1,11 @@
 ---
 # file: handlers/main.yml
 
+- name: activate collector_service
+  command: graylog-collector-sidecar -service install
+  become: true
+  ignore_errors: true
+
 - name: restart collector_sidecar
   service:
     name: "{{ sidecar_service }}"
