@@ -3,17 +3,41 @@
   package:
     name: ['curl', 'gawk', 'sed']
     state: present
-  when: ansible_distribution_major_version == "6"
+
+- name: install NXLog {{ sidecar_nxlog_version }} from official repo
+  yum:
+    name: "{{ sidecar_nxlog_package_url }}"
+    state: present
+  become: true
+  when: sidecar_install_nxlog and sidecar_nxlog_version is defined
+
+- name: deactivate NXLog service because of Sidecar-managed
+  service:
+    name: nxlog
+    enabled: false
+    state: stopped
+  when: sidecar_install_nxlog
+
+- name: add nxlog user to root group
+  user:
+    name: nxlog
+    groups: root
+    append: true
+  when: sidecar_install_nxlog
 
 - name: get latest sidecar package url
   shell: curl --silent {{ sidecar_github_repo }}/releases/latest|/usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'| grep {{ sidecar_architecture }} |grep rpm
   register: install_latest_version
+  args:
+    warn: false
   when: sidecar_version is undefined and sidecar_local_package is undefined
   changed_when: false
 
 - name: get specific sidecar package url
   shell: curl --silent {{ sidecar_github_repo }}/releases|grep {{ sidecar_version }} | /usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'|grep {{ sidecar_architecture }} |grep rpm
   register: install_specific_version
+  args:
+    warn: false
   when: sidecar_version is defined and sidecar_local_package is undefined
   changed_when: false
 
