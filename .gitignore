@@ -6,3 +6,4 @@ out
 gen
 files/
 .DS_Store
+molecule/default/tests/__pycache__/
