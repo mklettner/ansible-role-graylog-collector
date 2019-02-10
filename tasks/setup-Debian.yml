@@ -54,7 +54,7 @@
 
 - name: copy deb to server
   copy:
-    src: ../files/{{ sidecar_local_package }}
+    src: {{ playbook_dir }}/files/{{ sidecar_local_package }}
     dest: /tmp/{{ sidecar_local_package }}
   when: sidecar_local_package is defined and sidecar_version is undefined
 
