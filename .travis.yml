@@ -6,8 +6,10 @@ env:
   global:
     - ROLE_NAME: ansible-role-graylog-collector
   matrix:
+    - MOLECULE_DISTRO: centos6
     - MOLECULE_DISTRO: centos7
     - MOLECULE_DISTRO: debian8
+    - MOLECULE_DISTRO: debian9
 
 install:
   # Install test dependencies.
@@ -19,7 +21,7 @@ before_script:
   - cd ansible-role-graylog-collector
 
 script:
-  # Run tests.
+  # Run tests.9
   - molecule test
 
 notifications:
