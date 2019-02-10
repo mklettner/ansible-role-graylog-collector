@@ -4,6 +4,16 @@
   package:
     name: ['curl', 'gawk', 'sed', 'lsb-release']
     state: present
+  register: dependencies_installed
+
+# Gather facts again after installing lsb-release to allow using ansible_lsb.codename for nxlog installation
+- name: Collect facts again
+  setup:
+    gather_subset:
+      - '!all'
+      - '!any'
+      - facter
+  when: dependencies_installed.changed
 
 - name: install NXLog {{ sidecar_nxlog_version }} from official repo
   apt:
@@ -31,6 +41,7 @@
   register: install_latest_version
   args:
     warn: false
+  changed_when: false
   when: sidecar_version is undefined and sidecar_local_package is undefined
 
 - name: get specific sidecar package url
@@ -38,6 +49,7 @@
   register: install_specific_version
   args:
     warn: false
+  changed_when: false
   when: sidecar_version is defined and sidecar_local_package is undefined
 
 - name: copy deb to server
