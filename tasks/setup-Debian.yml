@@ -5,6 +5,9 @@
     name: ['curl', 'gawk', 'sed', 'lsb-release']
     state: present
   register: dependencies_installed
+  until: dependencies_installed is success
+  retries: 10
+  delay: 2
 
 # Gather facts again after installing lsb-release to allow using ansible_lsb.codename for nxlog installation
 - name: collect facts
@@ -98,4 +101,8 @@
     state: present
   notify:
     - activate collector_service
+  register: local_installed
+  until: local_installed is success
+  retries: 10
+  delay: 2
   when: sidecar_local_package is defined and sidecar_version is undefined

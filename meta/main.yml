@@ -22,7 +22,6 @@ galaxy_info:
 
     galaxy_tags:
         - graylog
-        - graylog-collector
         - logging
         - sidecar
         - collector
