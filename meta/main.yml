@@ -2,6 +2,7 @@
 # meta/main.yml
 
 galaxy_info:
+    role_name: graylog-collector
     author: mklettner
     description: Install Graylog Sidecar Collector, Filebeat & NXLog
     license: MIT
