@@ -3,7 +3,7 @@
 
 galaxy_info:
     author: mklettner
-    description: Install Graylog Sidecar Collector
+    description: Install Graylog Sidecar Collector, Filebeat & NXLog
     license: MIT
     min_ansible_version: 1.8
 
@@ -20,9 +20,11 @@ galaxy_info:
               - stretch
 
     galaxy_tags:
-        - Graylog
+        - graylog
         - logging
         - sidecar
         - collector
+        - nxlog
+        - filebeat
 
 dependencies: []

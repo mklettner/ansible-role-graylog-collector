@@ -4,7 +4,7 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: ansible-role-graylog-collector
+    - ROLE_NAME: graylog-collector
   matrix:
     - MOLECULE_DISTRO: centos6
     - MOLECULE_DISTRO: centos7
