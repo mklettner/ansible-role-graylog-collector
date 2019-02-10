@@ -1,4 +1,10 @@
 ---
+
+- name: install dependencies
+  package:
+    name: ['curl', 'gawk', 'sed', 'lsb-release']
+    state: present
+
 - name: install NXLog {{ sidecar_nxlog_version }} from official repo
   apt:
     deb: "{{ sidecar_nxlog_package_url }}"
@@ -23,11 +29,15 @@
 - name: get latest sidecar package url
   shell: curl --silent {{ sidecar_github_repo }}/releases/latest|/usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'| grep {{ sidecar_architecture }} |grep deb
   register: install_latest_version
+  args:
+    warn: false
   when: sidecar_version is undefined and sidecar_local_package is undefined
 
 - name: get specific sidecar package url
   shell: curl --silent {{ sidecar_github_repo }}/releases|grep {{ sidecar_version }} | /usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'|grep {{ sidecar_architecture }} |grep deb
   register: install_specific_version
+  args:
+    warn: false
   when: sidecar_version is defined and sidecar_local_package is undefined
 
 - name: copy deb to server
@@ -44,9 +54,9 @@
   register: installed_specific
   when: sidecar_version is defined and sidecar_local_package is undefined
 
-- name: debug
-  debug:
-    msg: '{{ install_latest_version.stdout_lines[0] }}'
+# - name: debug
+#   debug:
+#     msg: "{{ install_latest_version.stdout_lines[0] }}"
 
 - name: install latest sidecar from official github repo
   apt:

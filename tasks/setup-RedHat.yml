@@ -1,11 +1,8 @@
 ---
 - name: install dependencies
-  yum: state=present name={{ item }}
-  with_items:
-        - libselinux-python
-        - sed
-        - curl
-        - gawk
+  package:
+    name: ['curl', 'gawk', 'sed']
+    state: present
   when: ansible_distribution_major_version == "6"
 
 - name: get latest sidecar package url
@@ -22,30 +19,30 @@
 
 - name: copy rpm to server
   copy:
-        src: ../files/{{ sidecar_local_package }}
-        dest: /tmp/{{ sidecar_local_package }}
+    src: ../files/{{ sidecar_local_package }}
+    dest: /tmp/{{ sidecar_local_package }}
   when: sidecar_local_package is defined and sidecar_version is undefined
 
 - name: install specific sidecar from official github repo
   yum:
-        name: "{{ install_specific_version.stdout_lines }}"
-        state: present
+    name: "{{ install_specific_version.stdout_lines }}"
+    state: present
   become: true
   register: installed_specific
   when: sidecar_version is defined and sidecar_local_package is undefined
 
 - name: install latest sidecar from official github repo
   yum:
-        name: "{{ install_latest_version.stdout_lines }}"
-        state: present
+    name: "{{ install_latest_version.stdout_lines }}"
+    state: present
   become: true
   register: installed_latest
   when: sidecar_version is undefined and sidecar_local_package is undefined
 
 - name: install local sidecar rpm
   yum:
-        name: /tmp/{{ sidecar_local_package }}
-        state: present
+    name: /tmp/{{ sidecar_local_package }}
+    state: present
   when: sidecar_local_package is defined and sidecar_version is undefined
 
 
