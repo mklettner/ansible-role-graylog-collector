@@ -48,6 +48,9 @@
   register: install_latest_version
   args:
     warn: false
+  until: install_latest_version is success
+  retries: 10
+  delay: 3
   changed_when: false
   when: sidecar_version is undefined and sidecar_local_package is undefined
 
@@ -56,6 +59,9 @@
   register: install_specific_version
   args:
     warn: false
+  until: install_specific_version is success
+  retries: 10
+  delay: 3
   changed_when: false
   when: sidecar_version is defined and sidecar_local_package is undefined
 
