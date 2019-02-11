@@ -4,7 +4,7 @@ services: docker
 
 env:
   global:
-    - ROLE_NAME: graylog-collector
+    - ROLE_NAME: graylog_collector
   matrix:
     - MOLECULE_DISTRO: centos6
     - MOLECULE_DISTRO: centos7
@@ -18,7 +18,7 @@ install:
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - mv ansible-role-$ROLE_NAME mklettner.$ROLE_NAME
+  - mv ansible-role-graylog-collector mklettner.$ROLE_NAME
   - cd mklettner.$ROLE_NAME
 
 script:
