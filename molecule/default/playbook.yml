@@ -2,4 +2,4 @@
 - name: Converge
   hosts: all
   roles:
-    - role: ansible-role-graylog-collector
+    - role: mklettner.graylog_collector

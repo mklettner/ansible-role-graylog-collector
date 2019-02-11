@@ -58,7 +58,7 @@ None.
     ---
     - hosts: all
       roles:
-        - role: sidecar
+        - role: mklettner.graylog_collector
           sidecar_server_url: https://example.com:9000/api/
           sidecar_update_interval: 20
           sidecar_node_id: "{{ ansible_hostname }}"

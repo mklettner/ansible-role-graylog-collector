@@ -18,11 +18,12 @@ install:
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
-  - cd ansible-role-graylog-collector
+  - mv ansible-role-$ROLE_NAME mklettner.$ROLE_NAME
+  - cd mklettner.$ROLE_NAME
 
 script:
   # Run tests.9
   - molecule test
 
 notifications:
-webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
