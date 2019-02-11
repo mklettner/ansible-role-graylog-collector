@@ -4,7 +4,7 @@
 galaxy_info:
     role_name: graylog-collector
     author: mklettner
-    description: Install Graylog Sidecar Collector, Filebeat & NXLog latest version or specific version via internet or local package
+    description: Install Graylog Collector Sidecar, Filebeat & NXLog latest version or specific version via internet or local package. Also manages graylog-collector settings.
     license: MIT
     min_ansible_version: 2.4
 
@@ -22,9 +22,9 @@ galaxy_info:
 
     galaxy_tags:
         - graylog
+        - collector
         - logging
         - sidecar
-        - collector
         - nxlog
         - filebeat
 
