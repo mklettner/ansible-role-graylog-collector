@@ -34,7 +34,7 @@
   when: sidecar_install_nxlog
 
 - name: get latest sidecar package url
-  shell: curl --silent {{ sidecar_github_repo }}/releases/latest|/usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'| grep {{ sidecar_architecture }} |grep rpm
+  shell: curl --silent {{ sidecar_github_repo }}/releases/latest|/usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'| grep {{ sidecar_architecture }} |grep rpm    # noqa 306 204
   register: install_latest_version
   args:
     warn: false
@@ -45,7 +45,7 @@
   changed_when: false
 
 - name: get specific sidecar package url
-  shell: curl --silent {{ sidecar_github_repo }}/releases|grep {{ sidecar_version }} | /usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'|grep {{ sidecar_architecture }} |grep rpm
+  shell: curl --silent {{ sidecar_github_repo }}/releases|grep {{ sidecar_version }} | /usr/bin/awk '/browser_download_url/ { print $2 }' | /bin/sed 's/"//g'|grep {{ sidecar_architecture }} |grep rpm    # noqa 306 204
   register: install_specific_version
   args:
     warn: false
