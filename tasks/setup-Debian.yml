@@ -2,8 +2,9 @@
 
 - name: install dependencies
   package:
-    name: ['curl', 'gawk', 'sed', 'lsb-release']
+    name: ['curl', 'gawk', 'sed', 'lsb-release', 'xz-utils']
     state: present
+    update_cache: true
   register: dependencies_installed
   until: dependencies_installed is success
   retries: 10
@@ -24,7 +25,7 @@
     state: present
   register: nxlog_installed
   until: nxlog_installed is success
-  retries: 10
+  retries: 2
   delay: 2
   become: true
   when: sidecar_install_nxlog and sidecar_nxlog_version is defined

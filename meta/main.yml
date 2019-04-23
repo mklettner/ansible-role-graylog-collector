@@ -20,6 +20,11 @@ galaxy_info:
               - wheezy
               - stretch
 
+        - name: Ubuntu
+          versions:
+              - xenial
+              - bionic
+
     galaxy_tags:
         - graylog
         - collector

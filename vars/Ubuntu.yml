@@ -1,0 +1,4 @@
+---
+sidecar_architecture: amd64
+sidecar_nxlog_package_url: https://nxlog.co/system/files/products/files/348/nxlog-ce_{{sidecar_nxlog_version}}_ubuntu_{{ansible_lsb.codename}}_amd64.deb
+sidecar_service: collector-sidecar
