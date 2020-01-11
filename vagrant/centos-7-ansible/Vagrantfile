@@ -1,0 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# noinspection RubyResolve
+#------------------------------------
+
+# Global config section - applied to all VMs
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "centos7"
+  config.vm.box_check_update = true
+
+  # Install first: 'vagrant plugin install vagrant-sshfs'
+  config.vm.synced_folder "../../../", "/role", type: "sshfs"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"] # has to be on for sshfs to work on windows
+    vb.memory = "2048"
+    vb.cpus = 2
+    vb.linked_clone = true
+  end
+
+  config.vm.define "ansible01" do |ansible01|
+    ansible01.vm.box = "centos/7"
+    ansible01.vm.hostname = "ansible01"
+    ansible01.vm.network "private_network", ip: "192.168.33.39", virtualbox__intnet: "private_net"
+    ansible01.vm.provision :ansible_local do |ansible|
+      ansible.playbook       = "/role/ansible-role-graylog-collector/vagrant/playbook-vagrant.yml"
+      ansible.config_file    = "/role/ansible-role-graylog-collector/vagrant/vagrant.cfg"
+      ansible.become         = true
+      ansible.verbose        = true
+      ansible.install        = true
+      ansible.limit          = "all" # or only "nodes" group, etc.
+      ansible.inventory_path = "/role/ansible-role-graylog-collector/vagrant/vagrant_inventory"
+    end
+  end
+
+end
